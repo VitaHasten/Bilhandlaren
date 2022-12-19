@@ -43,7 +43,7 @@ void PresentCars()
 {
     
     // Adding a centered title. 
-    Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------|");
+    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
     string text = "CARS FOR SALE";
     int windowWidth = Console.WindowWidth;
     int textWidth = text.Length;
@@ -51,18 +51,18 @@ void PresentCars()
 
     Console.SetCursorPosition(padding, Console.CursorTop);
     Console.WriteLine(text);
-    Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------|");
+    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
 
     // Presenting cars for sale from their objects, with formating.
-    Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-8} | {8,-11} | {9,-14} | {10,-9} |", "Object", "Car brand", "Model", "Color", "Transmission", "Engine", "Year", "Distance", "Sales price", "Purchase price", "For sale?"));
-    Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------|");
+    Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-9} | {8,-11} | {9,-14} | {10,-9} |", "Object", "Car brand", "Model", "Color", "Transmission", "Engine", "Year", "Distance", "Sales price", "Purchase price", "For sale?"));
+    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
 
     for (int i = 0; i < Car.Length; i++)
         if (Car[i] != null)
         {
-        Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-8} | {8,-11} | {9,-14} | {10,-9} |", (i+1), Car[i].carBrand, Car[i].model, Car[i].color, Car[i].transmission, Car[i].engine, Car[i].year, Car[i].distanceKm, Car[i].salesPrice, Car[i].purchasePrice, Car[i].forSale));
+        Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-9} | {8,-11} | {9,-14} | {10,-9} |", (i+1), Car[i].carBrand, Car[i].model, Car[i].color, Car[i].transmission, Car[i].engine, Car[i].year, Car[i].distanceKm+" km", Car[i].salesPrice+" kr", Car[i].purchasePrice+" kr", Car[i].forSale));
         }
-    Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------|");
+    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
     Console.Write("\nPress any key to continue. ");
     Console.ReadLine();
 }

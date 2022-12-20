@@ -12,7 +12,7 @@ namespace ConsoleApp17
     {
 
         // Instance Variables
-        public string carBrand;
+        public string carBrand="none";
         public string model;
         public string color;
         public string transmission;

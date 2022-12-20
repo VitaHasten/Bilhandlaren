@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // Creating list for available cars
@@ -9,6 +10,9 @@ List<Cars> carsForSale = new List<Cars>();
 
 // Creating list for sold cars
 List<Cars> soldCars = new List<Cars>();
+
+// Creating list for advanced search
+List<string> advancedSearchList = new List<string>();
 
 // Creating an array of objects
 Cars[] Car = new Cars[100];
@@ -37,11 +41,56 @@ void LoadCarsToList()
     }
 }
 
-// Presentering objects for sale, with a loop
 void PresentCars()
-
 {
+    Console.Clear();
+    // Adding a centered title. 
+    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
+    string text = "CARS FOR SALE";
+    int windowWidth = Console.WindowWidth;
+    int textWidth = text.Length;
+    int padding = (windowWidth / 2) - (textWidth / 2);
+
+    Console.SetCursorPosition(padding, Console.CursorTop);
+    Console.WriteLine(text);
+    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
+
+    // Presenting cars for sale from their objects, with formating.
+    Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-9} | {8,-11} | {9,-14} | {10,-9} |", "Object", "Car brand", "Model", "Color", "Transmission", "Engine", "Year", "Distance", "Sales price", "Purchase price", "For sale?"));
+    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
     
+    // Loop through the list and write each element to the console as a table row
+    for (int i = 0; i < Car.Length; i++)
+    {
+        if (Car[i] != null)
+        {
+            Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-9} | {8,-11} | {9,-14} | {10,-9} |", (i + 1), carsForSale[i].carBrand, carsForSale[i].model, carsForSale[i].color, carsForSale[i].transmission, carsForSale[i].engine, carsForSale[i].year, carsForSale[i].distanceKm + " km", carsForSale[i].salesPrice + " kr", carsForSale[i].purchasePrice + " kr", carsForSale[i].forSale));
+            Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
+        }
+    }
+    
+choiceSelection:
+    Console.WriteLine("\nPlease select ");
+    Console.WriteLine("\n1. Main Menu\t2. Advanced search\n\n");
+    int selection = 0;
+    selection=int.Parse(Console.ReadLine());
+    if (selection == 1)
+    {
+        MainMenu();
+    }
+    else if (selection == 2)
+    {
+        advancedSearch();
+    }
+    else 
+    {
+        goto choiceSelection;    
+    }
+}
+
+void PresentCars2()
+{
+    Console.Clear();
     // Adding a centered title. 
     Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
     string text = "CARS FOR SALE";
@@ -57,38 +106,17 @@ void PresentCars()
     Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-9} | {8,-11} | {9,-14} | {10,-9} |", "Object", "Car brand", "Model", "Color", "Transmission", "Engine", "Year", "Distance", "Sales price", "Purchase price", "For sale?"));
     Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
 
+    // Loop through the list and write each element to the console as a table row
     for (int i = 0; i < Car.Length; i++)
+    {
         if (Car[i] != null)
         {
-        Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-9} | {8,-11} | {9,-14} | {10,-9} |", (i+1), Car[i].carBrand, Car[i].model, Car[i].color, Car[i].transmission, Car[i].engine, Car[i].year, Car[i].distanceKm+" km", Car[i].salesPrice+" kr", Car[i].purchasePrice+" kr", Car[i].forSale));
-        }
-    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
-    Console.Write("\nPress any key to continue. ");
-    Console.ReadLine();
-}
-
-// Presenting the list of cars for sale. (Not in use)
-void PresentCars2()
-{
-    // Presenting cars for sale from the list, without formating.
-    foreach (var carList in carsForSale)
-    {
-        if (carList != null)
-        {
-            Console.Write($"{carList.carBrand} ");
-            Console.Write($"{carList.model} ");
-            Console.Write($"{carList.color} ");
-            Console.Write($"{carList.transmission} ");
-            Console.Write($"{carList.engine} ");
-            Console.Write($"{carList.year} ");
-            Console.Write($"{carList.distanceKm} ");
-            Console.Write($"{carList.salesPrice} ");
-            Console.Write($"{carList.purchasePrice} ");
-            Console.Write($"{carList.forSale} \n");
+            Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-9} | {8,-11} | {9,-14} | {10,-9} |", (i + 1), carsForSale[i].carBrand, carsForSale[i].model, carsForSale[i].color, carsForSale[i].transmission, carsForSale[i].engine, carsForSale[i].year, carsForSale[i].distanceKm + " km", carsForSale[i].salesPrice + " kr", carsForSale[i].purchasePrice + " kr", carsForSale[i].forSale));
+            Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------|");
         }
     }
-    Console.WriteLine("Press any key to return to main menu.");
-    Console.ReadLine();
+
+
 }
 
 // Add Car-object to list carsForSale
@@ -109,10 +137,12 @@ void AddCar()
             }
         }
 
+        Console.WriteLine($"First free position is {index}");
+
         // Adding new Car-object to the first free array position.
         if (index != -1)
         {
-            Car[index] = new Cars("Seat", "Ibiza", "Bronze", "Manual", "Diesel", 2018, 52000, 116000, 92000, 0, true);
+            Car[index] = new Cars("Bajs", "Ibiza", "Bronze", "Manual", "Diesel", 2018, 52000, 116000, 92000, 0, true);
 
             Console.Write("Carbrand: ");
             Car[index].carBrand = Console.ReadLine();
@@ -154,13 +184,14 @@ void AddCar()
 void SellCar() 
 {
     Console.Clear();
-    PresentCars();
+    LoadCarsToList();
+    PresentCars2();
 
     int sellCarChoiche = 0;
 
     Console.Write("\nSelect the number of the car you want to sell: ");
     sellCarChoiche=int.Parse(Console.ReadLine());
-    Console.Write("Enter the price you sold it for: ");
+    Console.Write($"\n{Car[sellCarChoiche-1].carBrand} {Car[sellCarChoiche-1].model}. (Purchase price was {Car[sellCarChoiche - 1].purchasePrice} kr.) Enter the price you sold it for: ");
     Car[sellCarChoiche-1].salesPrice= int.Parse(Console.ReadLine());
     Car[sellCarChoiche-1].forSale= false;
     Car[sellCarChoiche - 1].result =  (Car[sellCarChoiche - 1].salesPrice) - (Car[sellCarChoiche - 1].purchasePrice);
@@ -184,7 +215,6 @@ void ShowSoldCars()
             Console.Write($"{showCars.model}");
             Console.WriteLine($"\nSold for: {showCars.salesPrice} kr");
             Console.Write($"Total income: {showCars.result} kr");
-
         }
         Console.WriteLine("\n\nPress any key to return to main menu.");
         Console.ReadLine();
@@ -228,10 +258,159 @@ void MainMenu()
                 SellCar();
                 break;
             }
-            case "4": 
+        case "4": 
             {
                 ShowSoldCars();
                 break;
             }
     }
+}
+
+void advancedSearch()
+{
+    Console.Clear();
+
+    string searchCarbrand;
+    string searchCarbrandText = "Car brand: ";
+    string searchColor;
+    string searchColorText = "Color: ";
+    string searchTransmission;
+    string searchTransmissionText = "Transmission: ";
+    string searchEngine;
+    string searchEngineText = "Engine: ";
+    int searchMinimumPrice=0;
+    string searchMinimumPriceText = "Minimum price: ";
+    int searchMaximumPrice = 999999999;
+    string searchMaximumPriceText = "Maximum price: ";
+
+    Console.Write("CAR BRAND: Enter car brand or leave empty: ");
+    searchCarbrand = Console.ReadLine();
+    if (searchCarbrand != "")
+    {
+        searchCarbrand = searchCarbrand;
+        advancedSearchList.Add(searchCarbrandText);
+        advancedSearchList.Add(searchCarbrand);
+    }
+    else
+    {
+        searchCarbrand = null;
+    }
+    
+    Console.Write("COLOR: Enter color och leave empty: ");
+    searchColor = Console.ReadLine();
+    if (searchColor != "")
+    {
+        searchColor = searchColor;
+        advancedSearchList.Add(searchColorText);
+        advancedSearchList.Add(searchColor);
+    }
+    else
+    {
+        searchColor = null;
+    }
+    
+    Console.Write("TRANSMISSION: Select\t1. Automatic\t2. Manual\tor leave empty: ");
+    searchTransmission = Console.ReadLine();
+    if (searchTransmission == "1")
+    {
+        searchTransmission = "Automatic";
+        advancedSearchList.Add(searchTransmissionText);
+        advancedSearchList.Add(searchTransmission);
+    }
+    else if (searchTransmission == "2")
+    {
+        searchTransmission = "Manual";
+        advancedSearchList.Add(searchTransmissionText);
+        advancedSearchList.Add(searchTransmission);
+    }
+    else
+    {
+        searchTransmission = null;
+    }
+
+    Console.Write("ENGINE: Select\t1. Petrol\t2. Diesel\t3. Electric\tor leave empty: ");
+    searchEngine = Console.ReadLine();
+    
+    if (searchEngine == "1")
+    {
+        searchEngine = "Petrol";
+        advancedSearchList.Add(searchEngineText);
+        advancedSearchList.Add(searchEngine);
+    }
+    else if (searchEngine == "2")
+    {
+        searchEngine = "Diesel";
+        advancedSearchList.Add(searchEngineText);
+        advancedSearchList.Add(searchEngine);
+    }
+    else if (searchEngine == "3")
+    {
+        searchEngine = "Electric";
+        advancedSearchList.Add(searchEngineText);
+        advancedSearchList.Add(searchEngine);
+    }
+    else
+    {
+        searchEngine = null;
+    }
+
+    /*Console.Write("MAXIMUM PRICE: Select maximum price or leave empty: ");
+    searchMaximumPrice = int.Parse(Console.ReadLine());
+    if (searchMaximumPrice != 999999999)
+    {
+        searchMaximumPrice = int.Parse(Console.ReadLine());
+        advancedSearchList.Add(searchMaximumPriceText);
+        advancedSearchList.Add(searchMaximumPrice.ToString());
+    }
+    else
+    {
+        searchMaximumPrice = 999999999;
+    }
+
+    Console.Write("MINIMUM PRICE: Select minimum price or leave empty: ");
+    searchMinimumPrice = int.Parse(Console.ReadLine());
+    if (searchMinimumPrice != 0)
+    {
+        searchMinimumPrice = int.Parse(Console.ReadLine());
+        advancedSearchList.Add(searchMinimumPriceText);
+        advancedSearchList.Add(searchMinimumPrice.ToString());
+    }
+    else
+    {
+        searchMinimumPrice = 0;
+    }*/
+
+    Console.WriteLine("\nSearching cars based on your selections:\n");
+    int myCounter = 1;
+    
+    foreach (var myList in advancedSearchList)
+    {
+        Console.Write(myList);
+        if (myCounter % 2 == 0)
+        {
+            Console.WriteLine();
+        }
+        myCounter++;
+    }
+    Console.ReadLine();
+
+    
+    Console.Clear();
+    Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-9} | {8,-11} | {9,-14} |", "Object", "Car brand", "Model", "Color", "Transmission", "Engine", "Year", "Distance", "Sales price", "Purchase price"));
+    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------|");
+
+    var result = from s in carsForSale
+                 where s.carBrand == searchCarbrand || s.color == searchColor || s.transmission == searchTransmission || s.engine == searchEngine || s.salesPrice > searchMaximumPrice || s.salesPrice < searchMinimumPrice 
+                 select s;
+                 
+
+    int counter = 1;
+
+    foreach (var item in result)
+    {
+        Console.WriteLine(string.Format("{0,-6} | {1,-10} | {2,-7} | {3,-8} | {4,-12} | {5,-8} | {6,-5} | {7,-9} | {8,-11} | {9,-14} |", (counter), item.carBrand, item.model, item.color, item.transmission, item.engine, item.year, item.distanceKm + " km", item.salesPrice + " kr", item.purchasePrice + " kr"));
+        Console.WriteLine("----------------------------------------------------------------------------------------------------------------------|");
+        counter++;
+    }
+    
 }
